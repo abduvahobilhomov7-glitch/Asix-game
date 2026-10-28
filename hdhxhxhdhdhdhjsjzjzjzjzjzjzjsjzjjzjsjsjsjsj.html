@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RPlayz Pro Elite - Mobile Edition</title>
+    <style>
+        :root {
+            --bg-dark: #0a0b10;
+            --card-bg: #131620;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-red: #ff334b;
+            --accent-orange: #ff5e36;
+            --gold: #f39c12;
+            --text-main: #ffffff;
+            --text-muted: #8b9bb4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            padding-bottom: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: #0f121b;
+            border: none;
+            border-radius: 0;
+            margin-top: 0;
+            box-shadow: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(19, 22, 32, 0.95);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-title { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(135deg, #fff, #8b9bb4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .nav-menu { display: flex; gap: 6px; width: 100%; justify-content: space-between; }
+        .nav-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: white;
+        }
+
+        .balance-pill {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .balance-pill span { color: var(--accent-red); }
+
+        .content-body { padding: 16px; flex: 1; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .hero-banner { text-align: center; padding: 10px 0 20px 0; }
+        .hero-logo { font-size: 26px; font-weight: 900; color: var(--accent-red); font-style: italic; }
+        .hero-sub { color: var(--text-muted); font-size: 11px; margin-top: 4px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        .balance-card {
+            background: linear-gradient(145deg, #161a26, #11131c);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .bal-info .title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+        .bal-info .amount { font-size: 20px; font-weight: 900; color: var(--accent-red); display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+        .btn-fill {
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+            color: white; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;
+        }
+
+        .section-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #fff; display: flex; align-items: center; gap: 6px; }
+
+        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .game-menu-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .game-menu-item:hover { border-color: var(--accent-red); }
+        .game-menu-icon {
+            width: 45px; height: 45px; background: rgba(255,51,75,0.1); border: 2px solid var(--accent-red); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: var(--accent-red); font-size: 18px;
+        }
+        .game-menu-title { font-size: 13px; font-weight: 800; }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .case-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .case-card:hover { border-color: var(--accent-red); }
+        .case-img-box {
+            width: 100%; height: 100px; background: radial-gradient(circle, #22283a 0%, #0f1118 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+        }
+        .case-details { padding: 10px; }
+        .case-title { font-size: 12px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .case-price { font-size: 11px; color: var(--accent-red); margin-top: 2px; font-weight: 800; }
+
+        .back-btn {
+            background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer;
+            margin-bottom: 12px; display: flex; align-items: center; gap: 4px; font-weight: 700;
+        }
+
+        .case-detail-header { text-align: center; margin-bottom: 12px; font-size: 35px; }
+        .case-detail-header h2 { font-size: 17px; margin-top: 6px; font-weight: 900; }
+        .case-detail-header p { color: var(--accent-red); font-weight: 800; font-size: 13px; margin-top: 2px; }
+
+        .case-count-selector { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+        .count-btn {
+            background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-muted);
+            padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer;
+        }
+        .count-btn.active { background: var(--accent-red); border-color: var(--accent-red); color: white; }
+
+        .roulette-container {
+            width: 100%; height: 110px; background: #0d0f15; border: 2px solid var(--accent-red);
+            border-radius: 12px; overflow: hidden; position: relative; display: flex; align-items: center; margin-bottom: 12px;
+        }
+        .roulette-pointer {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: var(--gold);
+            transform: translateX(-50%); z-index: 10;
+        }
+        .roulette-roller { display: flex; position: absolute; left: 0; transition: left 2.5s cubic-bezier(0.1, 0.7, 0.1, 1); }
+        .roulette-item {
+            min-width: 90px; height: 95px; background: #161a26; margin: 0 3px; border-radius: 8px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 3px solid gray;
+            font-size: 22px;
+        }
+        .roulette-item .r-name { font-size: 9px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 80px; text-align: center; font-weight: 700; }
+        .roulette-item .r-price { font-size: 9px; color: #2ecc71; margin-top: 1px; font-weight: 800; }
+
+        .btn-open-case {
+            width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+            color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; margin-bottom: 12px;
+        }
+        .btn-open-case:disabled { background: #222633; color: #555c70; cursor: not-allowed; }
+
+        .skin-list-title { font-size: 12px; font-weight: 800; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; }
+        .skins-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-height: 260px; overflow-y: auto; padding-right: 2px; }
+        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: calc(100vh - 180px); overflow-y: auto; }
+        .skin-item {
+            background: var(--card-bg); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; align-items: center;
+            border: 1px solid var(--card-border); border-bottom: 3px solid gray; text-align: center; cursor: pointer;
+            font-size: 22px;
+        }
+        .skin-name { font-size: 10px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; font-weight: 700; }
+        .skin-price { font-size: 10px; color: #2ecc71; margin-top: 2px; font-weight: 800; }
+
+        .rarity-purple { border-bottom-color: #9b59b6; }
+        .rarity-red { border-bottom-color: #e74c3c; }
+        .rarity-gold { border-bottom-color: var(--gold); }
+
+        .upgrade-box { background: var(--card-bg); border-radius: 14px; padding: 16px; border: 1px solid var(--card-border); margin-bottom: 16px; text-align: center; }
+        .upgrade-slots { display: flex; justify-content: center; gap: 15px; align-items: center; margin: 15px 0; }
+        .upgrade-slot {
+            width: 100px; height: 110px; background: #0d0f15; border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 8px;
+            font-size: 24px;
+        }
+        .upgrade-slot.filled { border-style: solid; border-color: var(--accent-red); }
+        .upgrade-vs { font-size: 18px; font-weight: 900; color: var(--gold); }
+        .upgrade-targets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 180px; overflow-y: auto; margin-bottom: 12px; }
+
+        .profile-card { display: flex; align-items: center; gap: 14px; background: var(--card-bg); padding: 16px; border-radius: 14px; border: 1px solid var(--card-border); margin-bottom: 20px; }
+        .profile-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 28px; background: #161a26; flex-shrink: 0; }
+        .profile-name { font-size: 16px; font-weight: 900; margin-bottom: 2px; }
+        .profile-id { font-size: 11px; color: var(--text-muted); word-break: break-all; }
+
+        .settings-list { display: flex; flex-direction: column; gap: 10px; }
+        .settings-item {
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+            padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; font-weight: 700;
+        }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 16px;
+        }
+        .modal-content {
+            background: var(--card-bg); width: 100%; max-width: 340px; padding: 24px; border-radius: 16px;
+            text-align: center; border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .modal-icon { font-size: 40px; margin-bottom: 10px; }
+        .modal-title { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+        .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+        .modal-price { font-size: 16px; color: #2ecc71; font-weight: 900; margin-bottom: 16px; }
+        .modal-btns { display: flex; gap: 10px; }
+        .btn-main-modal, .btn-sec-modal { flex: 1; padding: 10px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; color: white; }
+        .btn-main-modal { background: linear-gradient(135deg, var(--accent-red), var(--accent-orange)); }
+        .btn-sec-modal { background: #222633; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <div class="header-top">
+                <div class="header-title">RPLAYZ PRO ELITE</div>
+                <div class="balance-pill">💎 <span id="globalBalance">50000000000</span></div>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item active" onclick="switchTab('home', this)">Asosiy</button>
+                <button class="nav-item" onclick="switchTab('games', this)">O'yinlar</button>
+                <button class="nav-item" onclick="switchTab('inventory', this)">Inventar</button>
+                <button class="nav-item" onclick="switchTab('profile', this)">Profil</button>
+            </div>
+        </div>
+
+        <div class="content-body">
+            <!-- 1. BOSH SAHIFA -->
+            <div id="page-home" class="page active">
+                <div class="hero-banner">
+                    <div class="hero-logo">RPLAYZ MOBILE</div>
+                    <div class="hero-sub">Ultimate CS Skin Platform & Vaults</div>
+                </div>
+                <div class="balance-card">
+                    <div class="bal-info">
+                        <div class="title">Hisob Balansi</div>
+                        <div class="amount">💎 <span id="homeBalance">50,000,000,000</span></div>
+                    </div>
+                    <button class="btn-fill" onclick="addBalance(10000000000)">+ 10B Bonus</button>
+                </div>
+                <div class="section-title"><span>⚡</span> Kunlik vazifalar</div>
+                <div style="background:var(--card-bg); padding:14px 16px; border-radius:12px; border:1px solid var(--card-border); display:flex; justify-content:space-between; align-items:center;">
+                    <div><b style="font-size: 13px;">Do'stni taklif qilish</b><div style="color:var(--accent-red); font-size:11px; margin-top:2px;">+1,000,000,000 💎</div></div>
+                    <button class="btn-fill" onclick="addBalance(1000000000)" style="padding: 8px 12px; font-size: 11px;">Olish</button>
+                </div>
+            </div>
+
+            <!-- 2. O'YINLAR -->
+            <div id="page-games" class="page">
+                <div class="section-title" style="justify-content:center; color: var(--accent-red); font-size: 18px; margin-bottom: 16px;">🎮 O'yin Rejimlari</div>
+                <div class="games-grid">
+                    <div class="game-menu-item" onclick="switchPage('cases')">
+                        <div class="game-menu-icon">📦</div>
+                        <div class="game-menu-title">Keyslar (51 ta)</div>
+                    </div>
+                    <div class="game-menu-item" onclick="openBattlesPage()">
+                        <div class="game-menu-icon">⚔️</div>
+                        <div class="game-menu-title">Keys Battllari</div>
+                    </div>
+                    <div class="game-menu-item" onclick="openUpgraderPage()">
+                        <div class="game-menu-icon">📈</div>
+                        <div class="game-menu-title">Smart Upgrader</div>
+                    </div>
+                    <div class="game-menu-item" onclick="openContractsPage()">
+                        <div class="game-menu-icon">📄</div>
+                        <div class="game-menu-title">Shartnomalar</div>
+                    </div>
+                    <div class="game-menu-item" onclick="switchPage('shop')" style="grid-column: span 2;">
+                        <div class="game-menu-icon">🛒</div>
+                        <div class="game-menu-title">Skinlar Do'koni</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. KEYSLAR -->
+            <div id="page-cases" class="page">
+                <button class="back-btn" onclick="switchPage('games')">← Orqaga</button>
+                <div class="section-title"><span>📦</span> Ekstremal Keyslar (51 ta)</div>
+                <div class="cases-grid" id="casesGrid"></div>
+            </div>
+
+            <!-- 4. KEYSNING ICHKI QISMI -->
+            <div id="page-case-detail" class="page">
+                <button class="back-btn" onclick="switchPage('cases')">← Orqaga</button>
+                <div class="case-detail-header">
+                    <div id="detailEmoji">🎁</div>
+                    <h2 id="detailTitle">Keys nomi</h2>
+                    <p id="detailPrice">💎 0</p>
+                </div>
+
+                <div class="case-count-selector">
+                    <button class="count-btn active" onclick="setCaseCount(1)">1 ta</button>
+                    <button class="count-btn" onclick="setCaseCount(2)">2 ta</button>
+                    <button class="count-btn" onclick="setCaseCount(3)">3 ta</button>
+                    <button class="count-btn" onclick="setCaseCount(5)">5 ta</button>
+                    <button class="count-btn" onclick="setCaseCount(10)">10 ta</button>
+                </div>
+
+                <div class="roulette-container">
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-roller" id="rouletteRoller"></div>
+                </div>
+
+                <button class="btn-open-case" id="openCaseBtn" onclick="startCaseOpening()">Keysni Ochish</button>
+                
+                <div class="skin-list-title">Bu keysdagi mukofotlar:</div>
+                <div class="skins-grid" id="detailSkinsGrid"></div>
+            </div>
+
+            <!-- 5. KEYS BATTLE -->
+            <div id="page-battles" class="page">
+                <button class="back-btn" onclick="switchPage('games')">← Orqaga</button>
+                <div class="section-title" style="justify-content:center;"><span>⚔️</span> Keys Battllari (PvP Bot)</div>
+                <div class="upgrade-box">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Bot bilan jang qiling. G‘olib barcha skinlarni oladi!</p>
+                    <button class="btn-open-case" onclick="startCaseBattle()">Battlni Boshlash (💎 1,000,000)</button>
+                </div>
+                <div id="battleResultArea" style="text-align: center; margin-top: 15px;"></div>
+            </div>
+
+            <!-- 6. UPGRADER -->
+            <div id="page-upgrader" class="page">
+                <button class="back-btn" onclick="switchPage('games')">← Orqaga</button>
+                <div class="section-title" style="justify-content:center;"><span>📈</span> Smart Upgrader</div>
+                <div class="upgrade-box">
+                    <div class="upgrade-slots">
+                        <div class="upgrade-slot" id="userUpgradeSlot" onclick="openInventoryPicker()">
+                            <div>➕</div>
+                            <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Skin tanlang</div>
+                        </div>
+                        <div class="upgrade-vs">VS</div>
+                        <div class="upgrade-slot" id="targetUpgradeSlot">
+                            <div>🎯</div>
+                            <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Maqsad</div>
+                        </div>
+                    </div>
+                    <div id="upgradeChanceText" style="font-size: 14px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">Imkoniyat: 0%</div>
+                    <button class="btn-open-case" id="startUpgradeBtn" onclick="startUpgrade()" disabled>Apgreyd qilish</button>
+                </div>
+                <div class="skin-list-title" id="targetSkinTitleHeader">Avval o'z skiningizni tanlang:</div>
+                <div class="upgrade-targets" id="upgradeTargetsGrid"></div>
+            </div>
+
+            <!-- 7. SHARTNOMALAR -->
+            <div id="page-contracts" class="page">
+                <button class="back-btn" onclick="switchPage('games')">← Orqaga</button>
+                <div class="section-title" style="justify-content:center;"><span>📄</span> Shartnomalar (Trade-Up)</div>
+                <div class="upgrade-box">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">3 ta skinni yangi qimmatroq skinga almashtiring!</p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px;">
+                        <div class="upgrade-slot" onclick="openContractPicker(0)" style="width: 90px; height: 100px;" id="cSlot0">➕ 1</div>
+                        <div class="upgrade-slot" onclick="openContractPicker(1)" style="width: 90px; height: 100px;" id="cSlot1">➕ 2</div>
+                        <div class="upgrade-slot" onclick="openContractPicker(2)" style="width: 90px; height: 100px;" id="cSlot2">➕ 3</div>
+                    </div>
+                    <button class="btn-open-case" id="executeContractBtn" onclick="executeContract()" disabled>Shartnomani Imzolash</button>
+                </div>
+            </div>
+
+            <!-- 8. DO'KON -->
+            <div id="page-shop" class="page">
+                <button class="back-btn" onclick="switchPage('games')">← Orqaga</button>
+                <div class="section-title"><span>🛒</span> Eksklyuziv Skinlar Do'koni</div>
+                <div class="shop-grid" id="shopSkinsGrid"></div>
+            </div>
+
+            <!-- 9. INVENTAR -->
+            <div id="page-inventory" class="page">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div class="section-title" style="margin-bottom: 0;"><span>🎒</span> Inventar</div>
+                    <button class="btn-fill" onclick="sellAllInventory()" style="padding: 6px 12px; font-size: 11px; background: linear-gradient(135deg, #e74c3c, #c0392b);">Barchasini Sotish</button>
+                </div>
+                <div id="inventoryList" class="skins-grid" style="max-height: calc(100vh - 180px); grid-template-columns: repeat(3, 1fr);"></div>
+            </div>
+
+            <!-- 10. PROFIL -->
+            <div id="page-profile" class="page">
+                <div class="profile-card">
+                    <div class="profile-avatar">👤</div>
+                    <div>
+                        <div class="profile-name">Abduvahob</div>
+                        <div class="profile-id">ID: 8923426363</div>
+                    </div>
+                </div>
+                <div class="section-title" style="font-size: 14px;"><span>🏆</span> Eng qimmatli dropim</div>
+                <div class="skins-grid" style="grid-template-columns: repeat(2, 1fr); max-height: none; margin-bottom: 20px;">
+                    <div class="skin-item rarity-gold">
+                        <div>🌌</div>
+                        <div class="skin-name">Absolute Universe | Creator</div>
+                        <div class="skin-price">💎 15,000,000,000</div>
+                    </div>
+                    <div class="skin-item rarity-gold">
+                        <div>🐉</div>
+                        <div class="skin-name">AWP | Dragon Lore Universe</div>
+                        <div class="skin-price">💎 10T</div>
+                    </div>
+                </div>
+                <div class="section-title" style="font-size: 14px;"><span>⚙️</span> Sozlamalar</div>
+                <div class="settings-list">
+                    <div class="settings-item" onclick="showProModal('Til', '🌐', 'Hozirgi til: O\'zbekcha.')"><span>🌐 Til</span><span>O'zbekcha ></span></div>
+                    <div class="settings-item" onclick="showProModal('Treyd-link', '🔗', 'Steam Trade URL ulangan.')"><span>🔗 Treyd-link</span><span style="color:var(--accent-red);">O'zgartirish ></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALLAR -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🔫</div>
+            <div class="modal-title" id="modalTitle">Skin nomi</div>
+            <div class="modal-price" id="modalPrice">💎 0</div>
+            <div class="modal-btns">
+                <button class="btn-main-modal" onclick="sellItem()">Sotish</button>
+                <button class="btn-sec-modal" onclick="closeModal('itemModal')">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="buySkinModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="buyModalIcon">🛒</div>
+            <div class="modal-title" id="buyModalTitle">Sotib olish</div>
+            <div class="modal-sub">Ushbu skinni sotib olasizmi?</div>
+            <div class="modal-price" id="buyModalPrice">💎 0</div>
+            <div class="modal-btns">
+                <button class="btn-main-modal" onclick="confirmBuySkin()">Sotib olish</button>
+                <button class="btn-sec-modal" onclick="closeModal('buySkinModal')">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content" style="max-width: 340px;">
+            <div class="modal-icon" id="winIcon">🎉</div>
+            <div class="modal-title" style="color: var(--gold); font-size: 18px;">Tabriklaymiz!</div>
+            <div class="modal-sub" id="winSub">Siz quyidagi mukofotni yutib oldingiz:</div>
+            <div id="singleWinDetails">
+                <div id="winName" style="font-weight: 900; margin-bottom: 4px; font-size: 13px;">Skin nomi</div>
+                <div class="modal-price" id="winPrice">💎 0</div>
+            </div>
+            <div class="skins-grid" id="multiWinGrid" style="max-height: 160px; margin: 10px 0; display: none; grid-template-columns: repeat(3, 1fr);"></div>
+            <div class="modal-btns" id="winModalBtns"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="balanceModal">
+        <div class="modal-content" style="border: 1px solid var(--accent-red);">
+            <div class="modal-title" style="color: var(--accent-red);">Balans yetarli emas!</div>
+            <div class="modal-sub">Olmos yetishmaydi.</div>
+            <div class="modal-btns"><button class="btn-main-modal" onclick="closeModal('balanceModal')">Tushunarli</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="emptyInventoryModal">
+        <div class="modal-content" style="border: 1px solid var(--accent-red);">
+            <div class="modal-title" style="color: var(--accent-red);">Inventar bo'sh!</div>
+            <div class="modal-sub">Sizda mos skinlar yo'q.</div>
+            <div class="modal-btns"><button class="btn-main-modal" onclick="closeModal('emptyInventoryModal')">Tushunarli</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="upgradeResultModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="upgradeResIcon">🎉</div>
+            <div class="modal-title" id="upgradeResTitle" style="color: var(--gold);">Muvaffaqiyatli!</div>
+            <div class="modal-sub" id="upgradeResSub">Amaliyot bajarildi!</div>
+            <div class="modal-btns"><button class="btn-main-modal" onclick="closeModal('upgradeResultModal')">Ajoyib!</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="inventoryPickerModal">
+        <div class="modal-content" style="max-width: 360px;">
+            <div class="modal-title" style="font-size: 15px;">Inventardan skin tanlang</div>
+            <div class="skins-grid" id="pickerInventoryList" style="max-height: 200px; margin: 10px 0; grid-template-columns: repeat(3, 1fr);"></div>
+            <button class="btn-sec-modal" onclick="closeModal('inventoryPickerModal')" style="width: 100%;">Yopish</button>
+        </div>
+    </div>
+
+    <div class="modal" id="genericProModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="proModalIcon">✨</div>
+            <div class="modal-title" id="proModalTitle">Sarlavha</div>
+            <div class="modal-sub" id="proModalText">Ma'lumot</div>
+            <div class="modal-btns"><button class="btn-main-modal" onclick="closeModal('genericProModal')">Tushunarli</button></div>
+        </div>
+    </div>
+
+    <script>
+        let balance = localStorage.getItem('rplayz_balance') ? parseInt(localStorage.getItem('rplayz_balance')) : 50000000000;
+        let inventory = localStorage.getItem('rplayz_inventory') ? JSON.parse(localStorage.getItem('rplayz_inventory')) : [];
+        
+        let currentCase = null;
+        let selectedItemIndex = null;
+        let selectedShopSkin = null;
+        let currentSkinsList = [];
+        let selectedCaseCount = 1;
+        let lastWonItems = [];
+        let upgradeSourceItem = null;
+        let upgradeTargetItem = null;
+        let contractItems = [null, null, null];
+        let contractActiveSlot = 0;
+
+        const casesData = [];
+        const caseAdjectives = ["Starter", "Silver", "Gold", "Platinum", "Diamond", "Ruby", "Sapphire", "Emerald", "Master", "Grand", "Elite", "Supreme", "Godlike", "Titanium", "Quantum", "Cyber", "Neon", "Dragon", "Galaxy", "Imperial"];
+        const emojisList = ["💎", "👑", "🔥", "⚡", "🐉", "🛡️", "⚔️", "🔪", "🎯", "🎁"];
+
+        for (let i = 0; i < 51; i++) {
+            let adj = caseAdjectives[i % caseAdjectives.length];
+            let calculatedPrice = i === 50 ? 10000000000000 : Math.round(1000 + Math.pow(i / 50, 2.5) * 5000000000);
+            casesData.push({ id: i, name: i === 50 ? "Absolute Universe Vault #51" : `${adj} Vault #${i + 1}`, price: calculatedPrice, emoji: emojisList[i % emojisList.length] });
+        }
+
+        const shopSkinsData = [
+            { name: "USP-S | Kill Confirmed", rarity: "rarity-purple", price: 500000, emoji: "🔫" },
+            { name: "AWP | Asiimov", rarity: "rarity-red", price: 2500000, emoji: "🎯" },
+            { name: "AK-47 | Fire Serpent", rarity: "rarity-red", price: 15000000, emoji: "🔥" },
+            { name: "Karambit | Doppler FN", rarity: "rarity-red", price: 75000000, emoji: "🔪" },
+            { name: "AWP | Dragon Lore FN", rarity: "rarity-gold", price: 500000000, emoji: "🐉" },
+            { name: "Absolute Universe | Creator", rarity: "rarity-gold", price: 10000000000, emoji: "🌌" }
+        ];
+
+        function saveData() {
+            localStorage.setItem('rplayz_balance', balance);
+            localStorage.setItem('rplayz_inventory', JSON.stringify(inventory));
+        }
+
+        function setCaseCount(count) {
+            selectedCaseCount = count;
+            document.querySelectorAll('.count-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            if(currentCase) {
+                document.getElementById('openCaseBtn').textContent = `${count} ta Ochish (💎 ${(currentCase.price * count).toLocaleString()})`;
+            }
+        }
+
+        function generate20Skins(casePrice) {
+            let baseNames = ["USP-S", "AWP Asiimov", "M4A1-S", "Desert Eagle", "AK Vulcan", "M4A4", "AK Serpent", "AWP Fade", "Butterfly", "Karambit", "M9 Bayonet", "Dragon Lore", "Gloves Vice", "Gloves Fade", "Gungnir", "Gold Arabesque", "Butterfly Lore", "Medusa", "Gamma Doppler", "Universe God"];
+            let emojis = ["🔫", "🎯", "🛡️", "⚔️", "🗡️", "🔥", "⚡", "💎"];
+            let skins = [];
+            for (let i = 0; i < 20; i++) {
+                let skinPrice = i < 10 ? Math.round(casePrice * (0.5 + (i * 0.1))) : Math.round(casePrice * (1.8 + ((i - 10) * 0.8)));
+                let rarity = i < 5 ? "rarity-purple" : (i < 16 ? "rarity-red" : "rarity-gold");
+                skins.push({ name: baseNames[i] + ` #${i+1}`, rarity: rarity, price: skinPrice, emoji: emojis[i % emojis.length] });
+            }
+            return skins;
+        }
+
+        function renderCases() {
+            const grid = document.getElementById('casesGrid');
+            grid.innerHTML = '';
+            casesData.forEach(c => {
+                grid.innerHTML += `
+                    <div class="case-card" onclick="openCaseDetail(${c.id})">
+                        <div class="case-img-box">${c.emoji}</div>
+                        <div class="case-details">
+                            <div class="case-title">${c.name}</div>
+                            <div class="case-price">💎 ${c.price.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderShop() {
+            const grid = document.getElementById('shopSkinsGrid');
+            grid.innerHTML = '';
+            shopSkinsData.forEach((s, idx) => {
+                grid.innerHTML += `
+                    <div class="skin-item ${s.rarity}" onclick="openBuyModal(${idx})">
+                        <div>${s.emoji}</div>
+                        <div class="skin-name">${s.name}</div>
+                        <div class="skin-price">💎 ${s.price.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function openBuyModal(idx) {
+            selectedShopSkin = shopSkinsData[idx];
+            document.getElementById('buyModalIcon').textContent = selectedShopSkin.emoji;
+            document.getElementById('buyModalTitle').textContent = selectedShopSkin.name;
+            document.getElementById('buyModalPrice').textContent = "💎 " + selectedShopSkin.price.toLocaleString();
+            document.getElementById('buySkinModal').style.display = 'flex';
+        }
+
+        function confirmBuySkin() {
+            if (balance < selectedShopSkin.price) {
+                closeModal('buySkinModal');
+                document.getElementById('balanceModal').style.display = 'flex';
+                return;
+            }
+            balance -= selectedShopSkin.price;
+            inventory.push({...selectedShopSkin});
+            updateBalance();
+            updateInventory();
+            saveData();
+            closeModal('buySkinModal');
+            document.getElementById('upgradeResTitle').textContent = "Xarid qilindi!";
+            document.getElementById('upgradeResSub').textContent = `${selectedShopSkin.name} inventarga qo'shildi!`;
+            document.getElementById('upgradeResultModal').style.display = 'flex';
+        }
+
+        function openCaseDetail(id) {
+            currentCase = casesData[id];
+            document.getElementById('detailEmoji').textContent = currentCase.emoji;
+            document.getElementById('detailTitle').textContent = currentCase.name;
+            document.getElementById('detailPrice').textContent = "💎 " + currentCase.price.toLocaleString();
+            
+            selectedCaseCount = 1;
+            document.querySelectorAll('.count-btn').forEach((btn, idx) => {
+                if(idx === 0) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            document.getElementById('openCaseBtn').textContent = `1 ta Ochish (💎 ${currentCase.price.toLocaleString()})`;
+
+            currentSkinsList = generate20Skins(currentCase.price);
+            initRoulette(currentSkinsList, 'rouletteRoller');
+
+            const skinsGrid = document.getElementById('detailSkinsGrid');
+            skinsGrid.innerHTML = '';
+            currentSkinsList.forEach(s => {
+                skinsGrid.innerHTML += `
+                    <div class="skin-item ${s.rarity}">
+                        <div>${s.emoji}</div>
+                        <div class="skin-name">${s.name}</div>
+                        <div class="skin-price">💎 ${s.price.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            switchPage('case-detail');
+        }
+
+        function initRoulette(skins, rollerId) {
+            const roller = document.getElementById(rollerId);
+            roller.style.transition = 'none';
+            roller.style.left = '0px';
+            roller.innerHTML = '';
+            for (let i = 0; i < 40; i++) {
+                let randSkin = skins[Math.floor(Math.random() * skins.length)];
+                roller.innerHTML += `
+                    <div class="roulette-item ${randSkin.rarity}">
+                        <div>${randSkin.emoji}</div>
+                        <div class="r-name">${randSkin.name}</div>
+                        <div class="r-price">💎 ${randSkin.price.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function startCaseOpening() {
+            let totalCost = currentCase.price * selectedCaseCount;
+            if (balance < totalCost) {
+                document.getElementById('balanceModal').style.display = 'flex';
+                return;
+            }
+            balance -= totalCost;
+            updateBalance();
+            saveData();
+            document.getElementById('openCaseBtn').disabled = true;
+
+            const roller = document.getElementById('rouletteRoller');
+            roller.style.transition = 'none';
+            roller.style.left = '0px';
+            initRoulette(currentSkinsList, 'rouletteRoller');
+
+            let winningIndex = 30;
+            lastWonItems = [];
+            for(let i=0; i<selectedCaseCount; i++) {
+                lastWonItems.push(currentSkinsList[Math.floor(Math.random() * currentSkinsList.length)]);
+            }
+
+            let mainWonSkin = lastWonItems[0];
+            let targetCard = roller.children[winningIndex];
+            targetCard.className = `roulette-item ${mainWonSkin.rarity}`;
+            targetCard.innerHTML = `<div>${mainWonSkin.emoji}</div><div class="r-name">${mainWonSkin.name}</div><div class="r-price">💎 ${mainWonSkin.price.toLocaleString()}</div>`;
+
+            setTimeout(() => {
+                roller.style.transition = 'left 2.5s cubic-bezier(0.1, 0.7, 0.1, 1)';
+                let itemWidth = 96;
+                let offset = (winningIndex * itemWidth) - (roller.parentElement.clientWidth / 2) + (itemWidth / 2);
+                roller.style.left = `-${offset}px`;
+
+                setTimeout(() => {
+                    const singleDetails = document.getElementById('singleWinDetails');
+                    const multiGrid = document.getElementById('multiWinGrid');
+                    const modalBtns = document.getElementById('winModalBtns');
+
+                    if (lastWonItems.length === 1) {
+                        singleDetails.style.display = 'block';
+                        multiGrid.style.display = 'none';
+                        document.getElementById('winIcon').textContent = lastWonItems[0].emoji;
+                        document.getElementById('winName').textContent = lastWonItems[0].name;
+                        document.getElementById('winPrice').textContent = "💎 " + lastWonItems[0].price.toLocaleString();
+                        modalBtns.innerHTML = `<button class="btn-main-modal" onclick="sellSingleWonItem()">Sotish</button><button class="btn-sec-modal" onclick="saveSingleWonItem()">Saqlash</button>`;
+                    } else {
+                        singleDetails.style.display = 'none';
+                        multiGrid.style.display = 'grid';
+                        document.getElementById('winIcon').textContent = "🎉";
+                        multiGrid.innerHTML = '';
+                        lastWonItems.forEach(item => {
+                            multiGrid.innerHTML += `<div class="skin-item ${item.rarity}"><div>${item.emoji}</div><div class="skin-name">${item.name}</div><div class="skin-price">💎 ${item.price.toLocaleString()}</div></div>`;
+                        });
+                        modalBtns.innerHTML = `<button class="btn-main-modal" onclick="sellAllWonItemsModal()">Hammasi</button><button class="btn-sec-modal" onclick="saveAllWonItemsModal()">Saqlash</button>`;
+                    }
+                    document.getElementById('winModal').style.display = 'flex';
+                    document.getElementById('openCaseBtn').disabled = false;
+                }, 2600);
+            }, 50);
+        }
+
+        function sellSingleWonItem() {
+            if (lastWonItems.length > 0) {
+                balance += lastWonItems[0].price;
+                updateBalance();
+                saveData();
+                lastWonItems = [];
+                closeModal('winModal');
+            }
+        }
+        function saveSingleWonItem() {
+            if (lastWonItems.length > 0) {
+                inventory.push(lastWonItems[0]);
+                updateInventory();
+                saveData();
+                lastWonItems = [];
+                closeModal('winModal');
+            }
+        }
+        function sellAllWonItemsModal() {
+            let total = 0;
+            lastWonItems.forEach(item => total += item.price);
+            balance += total;
+            updateBalance();
+            saveData();
+            lastWonItems = [];
+            closeModal('winModal');
+        }
+        function saveAllWonItemsModal() {
+            lastWonItems.forEach(item => inventory.push(item));
+            updateInventory();
+            saveData();
+            lastWonItems = [];
+            closeModal('winModal');
+        }
+
+        function sellAllInventory() {
+            if (inventory.length === 0) {
+                document.getElementById('emptyInventoryModal').style.display = 'flex';
+                return;
+            }
+            let totalVal = 0;
+            inventory.forEach(item => totalVal += item.price);
+            balance += totalVal;
+            inventory = [];
+            updateBalance();
+            updateInventory();
+            saveData();
+            document.getElementById('upgradeResTitle').textContent = "Barchasi sotildi!";
+            document.getElementById('upgradeResSub').textContent = `Balansga 💎 ${totalVal.toLocaleString()} qo'shildi.`;
+            document.getElementById('upgradeResultModal').style.display = 'flex';
+        }
+
+        function openBattlesPage() {
+            switchPage('battles');
+            document.getElementById('battleResultArea').innerHTML = '';
+        }
+
+        function startCaseBattle() {
+            let cost = 1000000;
+            if (balance < cost) {
+                document.getElementById('balanceModal').style.display = 'flex';
+                return;
+            }
+            balance -= cost;
+            updateBalance();
+            saveData();
+            let skinPool = generate20Skins(2000000);
+            let mySkin = skinPool[Math.floor(Math.random() * skinPool.length)];
+            let botSkin = skinPool[Math.floor(Math.random() * skinPool.length)];
+            document.getElementById('battleResultArea').innerHTML = `<div style="font-size:13px; color:var(--text-muted);">Jang olib borilmoqda... ⚔️</div>`;
+            setTimeout(() => {
+                let won = mySkin.price >= botSkin.price;
+                if (won) {
+                    inventory.push(mySkin, botSkin);
+                    saveData();
+                    document.getElementById('battleResultArea').innerHTML = `<div style="color:var(--gold); font-weight:bold; font-size:14px;">G'alaba! 🎉 Mukofotlar olindi.</div>`;
+                } else {
+                    document.getElementById('battleResultArea').innerHTML = `<div style="color:var(--accent-red); font-weight:bold; font-size:14px;">Mag'lubiyat! ❌ Bot yutdi.</div>`;
+                }
+                updateInventory();
+            }, 1000);
+        }
+
+        function openUpgraderPage() {
+            renderUpgradeTargetsBasedOnSource();
+            switchPage('upgrader');
+        }
+
+        function renderUpgradeTargetsBasedOnSource() {
+            const grid = document.getElementById('upgradeTargetsGrid');
+            grid.innerHTML = '';
+            let basePrice = upgradeSourceItem ? upgradeSourceItem.price : 500000;
+            let targetSkins = [];
+            let emojis = ["🔫", "🎯", "🛡️", "⚔️", "🗡️", "🔥", "⚡", "💎"];
+            for (let i = 0; i < 9; i++) {
+                let targetPrice = Math.round(basePrice * (1.3 + (i * 0.4)));
+                targetSkins.push({ name: `Upgrade Mk.${i+1}`, rarity: "rarity-purple", price: targetPrice, emoji: emojis[i % emojis.length] });
+            }
+            targetSkins.forEach((s, idx) => {
+                grid.innerHTML += `<div class="skin-item ${s.rarity}" onclick="selectTargetSkin(${idx})"><div>${s.emoji}</div><div class="skin-name">${s.name}</div><div class="skin-price">💎 ${s.price.toLocaleString()}</div></div>`;
+            });
+            window.availableTargets = targetSkins;
+        }
+
+        function openInventoryPicker() {
+            if (inventory.length === 0) {
+                document.getElementById('emptyInventoryModal').style.display = 'flex';
+                return;
+            }
+            const list = document.getElementById('pickerInventoryList');
+            list.innerHTML = '';
+            inventory.forEach((item, index) => {
+                list.innerHTML += `<div class="skin-item ${item.rarity}" onclick="selectSourceSkin(${index})"><div>${item.emoji}</div><div class="skin-name">${item.name}</div><div class="skin-price">💎 ${item.price.toLocaleString()}</div></div>`;
+            });
+            document.getElementById('inventoryPickerModal').style.display = 'flex';
+        }
+
+        function selectSourceSkin(index) {
+            upgradeSourceItem = inventory.splice(index, 1)[0];
+            updateInventory();
+            saveData();
+            const slot = document.getElementById('userUpgradeSlot');
+            slot.className = `upgrade-slot filled ${upgradeSourceItem.rarity}`;
+            slot.innerHTML = `<div style="font-size:26px;">${upgradeSourceItem.emoji}</div><div class="skin-name" style="font-size: 8px; margin-top:2px;">${upgradeSourceItem.name}</div>`;
+            closeModal('inventoryPickerModal');
+            renderUpgradeTargetsBasedOnSource();
+            document.getElementById('targetSkinTitleHeader').textContent = "Maqsadli skinni tanlang:";
+        }
+
+        function selectTargetSkin(idx) {
+            upgradeTargetItem = window.availableTargets[idx];
+            const slot = document.getElementById('targetUpgradeSlot');
+            slot.className = `upgrade-slot filled ${upgradeTargetItem.rarity}`;
+            slot.innerHTML = `<div style="font-size:26px;">${upgradeTargetItem.emoji}</div><div class="skin-name" style="font-size: 8px; margin-top:2px;">${upgradeTargetItem.name}</div>`;
+            let chance = Math.min(90, Math.max(5, Math.round((upgradeSourceItem.price / upgradeTargetItem.price) * 100)));
+            document.getElementById('upgradeChanceText').textContent = `Imkoniyat: ${chance}%`;
+            document.getElementById('startUpgradeBtn').disabled = false;
+        }
+
+        function startUpgrade() {
+            if (!upgradeSourceItem || !upgradeTargetItem) return;
+            let chance = Math.min(90, Math.max(5, Math.round((upgradeSourceItem.price / upgradeTargetItem.price) * 100)));
+            let success = Math.random() * 100 <= chance;
+            if (success) {
+                inventory.push(upgradeTargetItem);
+                document.getElementById('upgradeResTitle').textContent = "Muvaffaqiyatli!";
+                document.getElementById('upgradeResSub').textContent = "Ajoyib skinga ega bo'ldingiz!";
+            } else {
+                document.getElementById('upgradeResTitle').textContent = "Yutqazdingiz!";
+                document.getElementById('upgradeResSub').textContent = "Afsus, apgreyd o'xshamadi.";
+            }
+            updateInventory();
+            saveData();
+            document.getElementById('upgradeResultModal').style.display = 'flex';
+            upgradeSourceItem = null;
+            upgradeTargetItem = null;
+            document.getElementById('userUpgradeSlot').className = "upgrade-slot";
+            document.getElementById('userUpgradeSlot').innerHTML = `<div>➕</div><div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Skin tanlang</div>`;
+            document.getElementById('targetUpgradeSlot').className = "upgrade-slot";
+            document.getElementById('targetUpgradeSlot').innerHTML = `<div>🎯</div><div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Maqsad</div>`;
+            document.getElementById('upgradeChanceText').textContent = "Imkoniyat: 0%";
+            document.getElementById('startUpgradeBtn').disabled = true;
+        }
+
+        function openContractsPage() {
+            contractItems = [null, null, null];
+            renderContractSlots();
+            switchPage('contracts');
+        }
+
+        function openContractPicker(slotIdx) {
+            contractActiveSlot = slotIdx;
+            if (inventory.length === 0) {
+                document.getElementById('emptyInventoryModal').style.display = 'flex';
+                return;
+            }
+            const list = document.getElementById('pickerInventoryList');
+            list.innerHTML = '';
+            inventory.forEach((item, index) => {
+                list.innerHTML += `<div class="skin-item ${item.rarity}" onclick="selectContractItem(${index})"><div>${item.emoji}</div><div class="skin-name">${item.name}</div><div class="skin-price">💎 ${item.price.toLocaleString()}</div></div>`;
+            });
+            document.getElementById('inventoryPickerModal').style.display = 'flex';
+        }
+
+        function selectContractItem(invIndex) {
+            contractItems[contractActiveSlot] = inventory.splice(invIndex, 1)[0];
+            updateInventory();
+            saveData();
+            closeModal('inventoryPickerModal');
+            renderContractSlots();
+        }
+
+        function renderContractSlots() {
+            let count = 0;
+            for (let i = 0; i < 3; i++) {
+                let slot = document.getElementById(`cSlot${i}`);
+                if (contractItems[i]) {
+                    count++;
+                    slot.className = `upgrade-slot filled ${contractItems[i].rarity}`;
+                    slot.innerHTML = `<div style="font-size:26px;">${contractItems[i].emoji}</div>`;
+                } else {
+                    slot.className = `upgrade-slot`;
+                    slot.innerHTML = `➕ ${i+1}`;
+                }
+            }
+            document.getElementById('executeContractBtn').disabled = count < 3;
+        }
+
+        function executeContract() {
+            let newPrice = Math.round(((contractItems[0].price + contractItems[1].price + contractItems[2].price) / 3) * 1.6);
+            let rewardSkin = { name: "Contract Winner Elite", rarity: "rarity-gold", price: newPrice, emoji: "🎁" };
+            inventory.push(rewardSkin);
+            saveData();
+            updateInventory();
+            contractItems = [null, null, null];
+            renderContractSlots();
+            document.getElementById('upgradeResTitle').textContent = "Shartnoma bajarildi!";
+            document.getElementById('upgradeResSub').textContent = `Yangi eksklyuziv skin yaratildi!`;
+            document.getElementById('upgradeResultModal').style.display = 'flex';
+        }
+
+        function showProModal(title, icon, text) {
+            document.getElementById('proModalTitle').textContent = title;
+            document.getElementById('proModalText').textContent = text;
+            document.getElementById('genericProModal').style.display = 'flex';
+        }
+
+        function updateBalance() {
+            document.getElementById('globalBalance').textContent = balance.toLocaleString();
+            document.getElementById('homeBalance').textContent = balance.toLocaleString();
+        }
+
+        function addBalance(amount) {
+            balance += amount;
+            updateBalance();
+            saveData();
+        }
+
+        function updateInventory() {
+            const inv = document.getElementById('inventoryList');
+            if (inventory.length === 0) {
+                inv.innerHTML = "<div style='grid-column: span 3; color: var(--text-muted); text-align: center; margin-top: 40px; font-size: 13px;'>Inventar bo'sh.</div>";
+                return;
+            }
+            inv.innerHTML = '';
+            inventory.forEach((item, index) => {
+                inv.innerHTML += `<div class="skin-item ${item.rarity}" onclick="showItemModal(${index})"><div>${item.emoji}</div><div class="skin-name">${item.name}</div><div class="skin-price">💎 ${item.price.toLocaleString()}</div></div>`;
+            });
+        }
+
+        function showItemModal(index) {
+            selectedItemIndex = index;
+            let item = inventory[index];
+            document.getElementById('modalIcon').textContent = item.emoji;
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalPrice').textContent = "💎 " + item.price.toLocaleString();
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function sellItem() {
+            if (selectedItemIndex !== null) {
+                let sold = inventory.splice(selectedItemIndex, 1)[0];
+                balance += sold.price;
+                updateBalance();
+                updateInventory();
+                saveData();
+                closeModal('itemModal');
+            }
+        }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + tabName).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function switchPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageName).classList.add('active');
+        }
+
+        updateBalance();
+        renderCases();
+        renderShop();
+        updateInventory();
+        renderUpgradeTargetsBasedOnSource();
+    </script>
+</body>
+</html>
